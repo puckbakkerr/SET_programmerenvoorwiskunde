@@ -34,11 +34,11 @@ def is_set(card1, card2, card3):
             (card1.number + card2.number + card3.number)%3 ==0
         )
 
-card1 = SetCard(color=0, shape=0, shading=0, number=0)
+card1 = SetCard(color=1, shape=0, shading=0, number=3)
 print(card1)
-card2 = SetCard(color=0, shape=0, shading=0, number=0)
+card2 = SetCard(color=2, shape=0, shading=0, number=3)
 print(card1)
-card3 = SetCard(color=0, shape=0, shading=0, number=0)
+card3 = SetCard(color=3, shape=0, shading=0, number=3)
 print(card1)
 
 print(is_set(card1, card2, card3))
