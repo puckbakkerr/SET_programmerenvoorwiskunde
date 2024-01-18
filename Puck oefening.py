@@ -23,14 +23,14 @@ def shuffle():
     deck =[]
 	
     for color in colors:
-	    for shape in shapes:
-            for shading in shadings:
-		        for number in numbers:
-			            deck.append(f'{color}_{shape}_{shading}_{number}')
+		for shape in shapes:
+			for shading in shadings:
+				for number in numbers:
+					deck.append(f'{color}_{shape}_{shading}_{number}')
 	print(deck)
 
 	# Create our players
-	global dealer, player
+    global dealer, player
 	dealer = []
 	player = []
 
@@ -53,7 +53,7 @@ def shuffle():
 	player.append(card)
 	# Output Card To Screen
 	global player_image
-	player_image = resize_cards(f'images/cards/{card}.png')
+	player_image = (f'C:\Users\joann\OneDrive\Puck\kaarten\{card}.png')
 	player_label.config(image=player_image)
 
 	#player_label.config(text=card)
@@ -85,7 +85,7 @@ def deal_cards():
 		player.append(card)
 		# Output Card To Screen
 		global player_image
-		player_image = resize_cards(f'images/cards/{card}.png')
+		player_image = (f'C:\Users\joann\OneDrive\Puck\kaarten\{card}.png')
 		player_label.config(image=player_image)
 		#player_label.config(text=card)
 
