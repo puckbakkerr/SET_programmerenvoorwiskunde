@@ -73,7 +73,7 @@ def deal_cards():
 		dealer.append(card)
 		# Output Card To Screen
 		global dealer_image
-		dealer_image = resize_cards(f'images/cards/{card}.png')
+		dealer_image = (f'C:\Users\joann\OneDrive\Puck\kaarten\{card}.png')
 		dealer_label.config(image=dealer_image)
 		#dealer_label.config(text=card)
 
