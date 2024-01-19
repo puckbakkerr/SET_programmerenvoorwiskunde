@@ -285,7 +285,7 @@ class TableVisualization:
         self.computer_score = 0
 
         # Display the new game
-        self.display_table()
+        self.display_start_screen()
 
     def check_and_update_table(self):
         if self.table.is_set(self.selected_cards):
