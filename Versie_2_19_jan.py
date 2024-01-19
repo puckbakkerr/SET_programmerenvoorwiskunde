@@ -37,7 +37,12 @@ class SetDeck:
         random.shuffle(self.cards)
 
     def deal_card(self):
-        return self.cards.pop() if self.cards else None
+        if not self.cards:
+            print("The deck is empty. Creating a new deck and shuffling.")
+            self.cards = self._generate_deck()
+            self.shuffle_deck()
+
+        return self.cards.pop()
 
 class Table:
     def __init__(self, set_deck):
@@ -285,7 +290,8 @@ class TableVisualization:
         self.computer_score = 0
 
         # Display the new game
-        self.display_start_screen()
+        table_visualization = TableVisualization(table)
+        table_visualization.display_start_screen()
 
     def check_and_update_table(self):
         if self.table.is_set(self.selected_cards):
