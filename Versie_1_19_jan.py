@@ -184,7 +184,7 @@ class TableVisualization:
         self.set_deck = set_deck
         self.card_images = self.load_card_images()
         self.selected_cards = []
-        self.timer_duration = 5
+        self.timer_duration = 30
         self.start_time = time.time()
         self.player_score = 0
         self.computer_score = 0
