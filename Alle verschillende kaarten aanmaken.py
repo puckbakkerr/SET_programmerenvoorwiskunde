@@ -16,4 +16,3 @@ def shuffle():
     print(deck)
 	
 shuffle()
-
