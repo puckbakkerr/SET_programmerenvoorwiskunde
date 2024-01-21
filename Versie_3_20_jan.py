@@ -289,7 +289,32 @@ class TableVisualization:
         table_visualization = TableVisualization(table)
         table_visualization.display_start_screen()
 
+    def check_and_update_table(self):
+        if self.table.is_set(self.selected_cards):
+            indices = [self.table.table_cards.index(card) for card in self.selected_cards]
 
+            for card in self.selected_cards:
+                self.table.table_cards.remove(card)
+
+            for _ in range(3):
+                new_card = self.set_deck.deal_card()
+                if new_card:
+                    self.table.table_cards.insert(indices.pop(0), new_card)
+                else:
+                    print("The deck is empty. No more cards can be drawn.")
+                    break
+
+            self.selected_cards = []
+            self.card_images = self.load_card_images()
+            self.start_time = time.time()
+            self.timer_duration = 5
+            self.player_score += 1
+
+            if self.player_score == 5:
+                self.display_winner_screen("Player")
+
+        else:
+            print("Selected Cards Do Not Form a Set.")
 
     def find_set_and_replace(self):
         found_set = self.table.find_set()
@@ -310,7 +335,6 @@ class TableVisualization:
 
             self.card_images = self.load_card_images()
             self.start_time = time.time()
-            self.selected_cards = []
             self.timer_duration = 30
             self.computer_score += 1
 
@@ -334,6 +358,7 @@ class TableVisualization:
             self.card_images = self.load_card_images()
             self.start_time = time.time()
             self.timer_duration = 30
+
 
 
 

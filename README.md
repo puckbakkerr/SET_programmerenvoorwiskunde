@@ -4,39 +4,26 @@
 
 Project Description:
 
+We started with the assignment; write a game of SET that you can play against the computer In our variant are there a few rules. 
+- There are always twelve cards on the table. The player who recognizes a set first will get the points. Those cards will be removed, and the cards will be replenished to twelve. 
+- If there isn’t a set found after thirty seconds, the top three cards are removed, and three new cards are added. 
+We chose to add a few elements to that; choose your time limit, compete with the computer using a scoreboard, choose a winner, let the player click on the cards, deselect the cards after the computer gets a set, and being able to restart the game without restarting the program.
+
 A brief description or overview of the project, explaining its purpose and main features.
 
 
 Installation Instructions:
 
-Guidance on how to install and set up the project. This may include dependencies, configuration steps, or specific instructions for different platforms.
+Before running our program, you need to install pygame. You can do that by typing into your terminal: pip install pygame
+After pygame is succesfully installed, you can run the program and a screen will open. 
 
 
 Usage:
 
-Instructions on how to use the project, including any relevant commands, configurations, or examples.
-
-
-Contributing Guidelines:
-
-Information for potential contributors, outlining how they can contribute to the project, submit bug reports, or propose new features. This section may also include guidelines for coding standards and pull requests.
-
-
-License:
-
-Details about the project's licensing, specifying the terms under which the software can be used, modified, and distributed.
-
-
-Documentation Links:
-
-Links to more detailed documentation, such as a full user manual or API documentation, if it exists outside the README.
+You can use this program to - ofcours - play SET. You can also use some of our code to improve your own project. We used comments to make sure you know what function takes care of what part of the program. 
 
 
 Contact Information:
 
-Contact details for the project maintainer or team, providing a way for users to reach out with questions or feedback.
+If you have any questions or feedback, you can reach out to j.p.p.bakker@students.uu.nl 
 
-
-Badges:
-
-Visual badges that display information about the project, such as build status, code coverage, or version. These badges are often linked to external services like CI/CD pipelines.
