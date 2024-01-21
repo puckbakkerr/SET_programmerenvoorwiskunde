@@ -5,9 +5,11 @@ from pygame.locals import QUIT, MOUSEBUTTONDOWN
 import os
 import time
 import sys
-
+#before playing instal pygame by tiping pip install pygame into the terminal.
 
 class SetCard:
+#Represents a singel card in the game ^
+    
     #The card gets the attributes color, shape, shading and number.
     def __init__(self, color, shape, shading, number):
         self.color = color
@@ -21,11 +23,13 @@ class SetCard:
         return os.path.join(current_directory, folder, f"{self.image_name}.gif")
 
 class SetDeck:
+#Represents the deck of cards used in the game^
     def __init__(self):
         self.cards = self._generate_deck()
         self.shuffle_deck()
 
     def _generate_deck(self):
+        #It makes al the 81 unique cards. 
         colors = ['red', 'green', 'purple']
         shapes = ['oval', 'diamond', 'squiggle']
         fills = ['empty', 'shaded', 'filled']
@@ -46,11 +50,13 @@ class SetDeck:
         return self.cards.pop()
 
 class Table:
+#Class represets the tale where cards are laid out ^
     def __init__(self, set_deck):
         self.set_deck = set_deck
         self.table_cards = []
 
     def fill_table(self):
+        #It fills the table until 12 cards. 
         while len(self.table_cards) < 12:
             new_card = self.set_deck.deal_card()
             if new_card:
@@ -63,6 +69,7 @@ class Table:
         return [self.table_cards[index - 1] for index in indices if 1 <= index <= len(self.table_cards)]
 
     def is_set(self, selected_cards):
+        #Checks if the cards are a valid set
         for attr in ['color', 'shape', 'shading', 'number']:
             values = set(getattr(card, attr) for card in selected_cards)
             if len(values) == 2:
@@ -70,10 +77,12 @@ class Table:
         return True
 
     def find_set(self):
+        #Finds all the sets on the table
         return next((list(card_combination) for card_combination in itertools.combinations(self.table_cards, 3)
                      if self.is_set(card_combination)), None)
 
 class TableVisualization:
+#Handles the graphical representation of the game using Pygame^
     def __init__(self, table):
         self.table = table
         self.set_deck = table.set_deck
@@ -86,9 +95,11 @@ class TableVisualization:
         self.game_started = False
 
     def load_card_images(self):
+        #giving the cards an image
         return {card: pygame.image.load(card.get_image_path()) for card in self.table.table_cards}
 
     def display_start_screen(self):
+        #Gives the player the change to choose a time limit
         pygame.init()
 
         window_width = 400
@@ -120,6 +131,7 @@ class TableVisualization:
         button3_text_rect = button3_text.get_rect(center=button3_rect.center)
 
         while True:
+        #Depended on which button was pushed, the player gets 15, 30, 60 seconds
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -170,6 +182,8 @@ class TableVisualization:
 
         running = True
         while running:
+        #Updates the timer and focuses on where the player is clicking.
+        #Replaces the three cards on the table after a set is found.
             elapsed_time = time.time() - self.start_time
             self.timer_duration = max(timer_duration - int(elapsed_time), 0)
 
@@ -217,6 +231,7 @@ class TableVisualization:
         pygame.quit()
 
     def get_card_at_position(self, x, y):
+    #positioning the cards
         card_width, card_height = self.card_images[self.table.table_cards[0]].get_size()
 
         column = x // card_width
@@ -227,6 +242,7 @@ class TableVisualization:
         return self.table.table_cards[index] if 0 <= index < len(self.table.table_cards) else None
 
     def display_info(self, window, window_height):
+    #posisioning the display information
         font = pygame.font.Font(None, 36)
         timer_text = font.render(f"Time Left: {self.timer_duration} seconds", True, (0, 0, 0))
         window.blit(timer_text, (5, window_height - 40))
@@ -235,9 +251,11 @@ class TableVisualization:
         window.blit(score_text, (5, 5))
 
     def check_and_display_set(self):
+    #This is only shown in the terminal and not on the screen
         print("Selected Cards Form a Set!") if self.table.is_set(self.selected_cards) else print("Selected Cards Do Not Form a Set.")
 
     def display_winner_screen(self, winner):
+    #Displaying the winner screen with a button to restart the game.
         pygame.init()
 
         window_width = 400
@@ -290,6 +308,8 @@ class TableVisualization:
         table_visualization.display_start_screen()
 
     def check_and_update_table(self):
+    #triggered by Players action and check sets on the table 
+    #and update accordingly (replacing the cards on the table)
         if self.table.is_set(self.selected_cards):
             indices = [self.table.table_cards.index(card) for card in self.selected_cards]
 
@@ -317,6 +337,10 @@ class TableVisualization:
             print("Selected Cards Do Not Form a Set.")
 
     def find_set_and_replace(self):
+    #triggered by Timer running out (cumputers turn) 
+    #check sets on the table 
+    #and update accordingly (replacing the cards on the table)
+    #it also removes the first three cards from the table and replace them
         found_set = self.table.find_set()
 
         if found_set:
