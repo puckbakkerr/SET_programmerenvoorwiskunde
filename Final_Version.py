@@ -260,13 +260,13 @@ class TableVisualization:
             if self.timer_duration == 0:
                 self.find_set_and_replace()
 
-                # Clear selected cards when the time limit is up
+                # Clears selected cards when the time limit is up.
                 self.selected_cards = []
 
         pygame.quit()
 
+    # Determines which card is clicked based on the mouse position.
     def get_card_at_position(self, x, y):
-    #positioning the cards
         card_width, card_height = self.card_images[self.table.table_cards[0]].get_size()
 
         column = x // card_width
@@ -276,8 +276,8 @@ class TableVisualization:
 
         return self.table.table_cards[index] if 0 <= index < len(self.table.table_cards) else None
 
+    # Positions the timer and scores.
     def display_info(self, window, window_height):
-    #posisioning the display information
         font = pygame.font.Font(None, 36)
         timer_text = font.render(f"Time Left: {self.timer_duration} seconds", True, (0, 0, 0))
         window.blit(timer_text, (5, window_height - 40))
@@ -285,12 +285,12 @@ class TableVisualization:
         score_text = font.render(f"Player: {self.player_score}   Computer: {self.computer_score}", True, (0, 0, 0))
         window.blit(score_text, (5, 5))
 
+    # Displays wether the selected cards are a set in the terminal.
     def check_and_display_set(self):
-    #This is only shown in the terminal and not on the screen
         print("Selected Cards Form a Set!") if self.table.is_set(self.selected_cards) else print("Selected Cards Do Not Form a Set.")
 
+    # Displays the winner screen with a button to restart the game.
     def display_winner_screen(self, winner):
-    #Displaying the winner screen with a button to restart the game.
         pygame.init()
 
         window_width = 400
@@ -324,13 +324,12 @@ class TableVisualization:
 
             pygame.display.flip()
 
+    # Resets the game.
     def restart_game(self):
-        # Reset the game state here
         set_deck = SetDeck()
         self.table = Table(set_deck)
         self.table.fill_table()
 
-        # Update any other necessary variables or state
         self.selected_cards = []
         self.card_images = self.load_card_images()
         self.start_time = time.time()
@@ -338,13 +337,12 @@ class TableVisualization:
         self.player_score = 0
         self.computer_score = 0
 
-        # Display the new game
+        # Displays the new game.
         table_visualization = TableVisualization(table)
         table_visualization.display_start_screen()
 
+    # Triggerd by the player, checks sets on the table and replaces the cards when necessary.
     def check_and_update_table(self):
-    #triggered by Players action and check sets on the table 
-    #and update accordingly (replacing the cards on the table)
         if self.table.is_set(self.selected_cards):
             indices = [self.table.table_cards.index(card) for card in self.selected_cards]
 
@@ -371,11 +369,8 @@ class TableVisualization:
         else:
             print("Selected Cards Do Not Form a Set.")
 
+    # Triggerd by the timer running out, checks sets on the table and replaces the cards when necessary.
     def find_set_and_replace(self):
-    #triggered by Timer running out (cumputers turn) 
-    #check sets on the table 
-    #and update accordingly (replacing the cards on the table)
-    #it also removes the first three cards from the table and replace them
         found_set = self.table.find_set()
 
         if found_set:
@@ -401,6 +396,7 @@ class TableVisualization:
                 
                 self.display_winner_screen("Computer")
 
+        # Removes the first three cards if there is no set on the table.
         else:
             print("No set found on the table. Removing the first three cards and drawing new ones.")
 
