@@ -1,3 +1,5 @@
+# Importing necessary modules for the program.
+# We used pygame to create our game, type "pip install pygame" into the terminal if pygame is not yet imported.
 import itertools
 import random
 import pygame
@@ -5,79 +7,103 @@ from pygame.locals import QUIT, MOUSEBUTTONDOWN
 import os
 import time
 import sys
-#before playing instal pygame by tiping pip install pygame into the terminal.
 
+# Represents a card in the game. 
 class SetCard:
-#Represents a singel card in the game ^
-    
-    #The card gets the attributes color, shape, shading and number.
+
+    # The card gets the attributes color, shape, shading and number.
     def __init__(self, color, shape, shading, number):
         self.color = color
         self.shape = shape
         self.shading = shading
         self.number = number
+        # Creates a name for the image of the card. 
         self.image_name = f"{color}{shape}{shading}{number}"
-    #Gives the image based on its attributes.
+    
+    # Returns the file path to the image of a particular card.
     def get_image_path(self, folder="kaarten"):
         current_directory = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(current_directory, folder, f"{self.image_name}.gif")
 
+# Represents the deck of cards used in the game. 
 class SetDeck:
-#Represents the deck of cards used in the game^
+    # The deck is created by generating a deck and shuffling it.
     def __init__(self):
-        self.cards = self._generate_deck()
+        self.cards = self.generate_deck()
         self.shuffle_deck()
 
-    def _generate_deck(self):
-        #It makes al the 81 unique cards. 
+    # A deck is created. 
+    def generate_deck(self):
+        # A list is made with all the possible attributes of a card.
         colors = ['red', 'green', 'purple']
         shapes = ['oval', 'diamond', 'squiggle']
         fills = ['empty', 'shaded', 'filled']
         numbers = [1, 2, 3]
 
+        # A deck of 81 unique cards is created by using intertools to create all the possible combinations of attributes.
         return [SetCard(color, shape, fill, number)
                 for color, shape, fill, number in itertools.product(colors, shapes, fills, numbers)]
 
+    # The deck is shuffled. 
     def shuffle_deck(self):
         random.shuffle(self.cards)
-    #refils the cards as well
+
+    # Deals a card from the deck.
     def deal_card(self):
+        # If the deck is empty, a new deck is created and shuffled.
         if not self.cards:
             print("The deck is empty. Creating a new deck and shuffling.")
-            self.cards = self._generate_deck()
+            self.cards = self.generate_deck()
             self.shuffle_deck()
-
+        # A card is returned by popping the last card in the deck. 
         return self.cards.pop()
 
+# Represents the table with twelve cards.
 class Table:
-#Class represets the tale where cards are laid out ^
+    # A table is created with a reference to a deck and an empty list.
     def __init__(self, set_deck):
         self.set_deck = set_deck
         self.table_cards = []
 
+    # The table is filled with twelve cards.
     def fill_table(self):
-        #It fills the table until 12 cards. 
         while len(self.table_cards) < 12:
             new_card = self.set_deck.deal_card()
             if new_card:
                 self.table_cards.append(new_card)
 
+    # Returns information about the card.
     def card_info(self, card):
         return f"Card: {card.color} {card.shape} {card.shading} {card.number} - Image Path: {card.get_image_path()}"
 
+    # The corresponding cards are selected, given a list of indices.
     def select_cards(self, indices):
         return [self.table_cards[index - 1] for index in indices if 1 <= index <= len(self.table_cards)]
 
+    # Checks if the seclected cards are a set.
     def is_set(self, selected_cards):
-        #Checks if the cards are a valid set
-        for attr in ['color', 'shape', 'shading', 'number']:
-            values = set(getattr(card, attr) for card in selected_cards)
-            if len(values) == 2:
+        color_mapping = {'red': 0, 'green': 1, 'purple': 2}
+        shape_mapping = {'oval': 0, 'diamond': 1, 'squiggle': 2}
+        shading_mapping = {'empty': 0, 'shaded': 1, 'filled': 2}
+
+        def convert_to_vector(card):
+            return [color_mapping[card.color], shape_mapping[card.shape], shading_mapping[card.shading], card.number]
+
+        # Checks if three cards are selected.
+        if len(selected_cards) != 3:
+            return False 
+
+        vector1, vector2, vector3 = map(convert_to_vector, selected_cards)
+
+        # Check if the sum of values is 0 (mod 3)
+        for i in range(len(vector1)):
+            total_sum = vector1[i] + vector2[i] + vector3[i]
+            if total_sum % 3 != 0:
                 return False
         return True
 
+    # Finds a set on the table.
     def find_set(self):
-        #Finds all the sets on the table
         return next((list(card_combination) for card_combination in itertools.combinations(self.table_cards, 3)
                      if self.is_set(card_combination)), None)
 
