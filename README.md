@@ -27,5 +27,3 @@ You can use this program to - of course - play SET. You can also use some of our
 Contact Information:
 
 If you have any questions or feedback, you can reach out to j.p.p.bakker@students.uu.nl 
-
-- 
