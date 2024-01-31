@@ -107,8 +107,10 @@ class Table:
         return next((list(card_combination) for card_combination in itertools.combinations(self.table_cards, 3)
                      if self.is_set(card_combination)), None)
 
+# Represents the visual aspects of the game and the game mechanics.
 class TableVisualization:
-#Handles the graphical representation of the game using Pygame^
+
+    # Initializes the TableVisualization instance.
     def __init__(self, table):
         self.table = table
         self.set_deck = table.set_deck
@@ -120,12 +122,12 @@ class TableVisualization:
         self.computer_score = 0
         self.game_started = False
 
+    # Loads the corresponding images for the cards on the table.
     def load_card_images(self):
-        #giving the cards an image
         return {card: pygame.image.load(card.get_image_path()) for card in self.table.table_cards}
 
+    # Displays a start screen.
     def display_start_screen(self):
-        #Gives the player the change to choose a time limit
         pygame.init()
 
         window_width = 400
@@ -134,15 +136,17 @@ class TableVisualization:
         window = pygame.display.set_mode((window_width, window_height))
         pygame.display.set_caption("Start Screen")
 
+        # Adds the text "Choose your time limit:" to the start screen.
         font = pygame.font.Font(None, 36)
         start_text = font.render("Choose your time limit:", True, (0, 0, 0))
 
         start_text_rect = start_text.get_rect(center=(window_width // 2, window_height // 4))
 
+        # Makes buttons for the differen time limits. 
         button_width = 100
         button_height = 40
 
-        # Center the buttons horizontally
+        # Centers the buttons horizontally
         button1_rect = pygame.Rect((window_width - button_width * 3) // 2, window_height // 2, button_width, button_height)
         button2_rect = pygame.Rect(button1_rect.right, window_height // 2, button_width, button_height)
         button3_rect = pygame.Rect(button2_rect.right, window_height // 2, button_width, button_height)
@@ -157,7 +161,7 @@ class TableVisualization:
         button3_text_rect = button3_text.get_rect(center=button3_rect.center)
 
         while True:
-        #Depended on which button was pushed, the player gets 15, 30, 60 seconds
+        # Depending on which button was pushed, the player gets a 15, 30 or 60 second time limit.
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -190,9 +194,11 @@ class TableVisualization:
 
             pygame.display.flip()
 
+    # Displays the table.
     def display_table(self, timer_duration):
         pygame.init()
 
+        # Makes a window for the table.
         card_width, card_height = self.card_images[self.table.table_cards[0]].get_size()
 
         window_width = card_width * 4
@@ -203,19 +209,21 @@ class TableVisualization:
 
         clock = pygame.time.Clock()
 
-        self.start_time = time.time()  # Reset the start time when displaying the table
-        self.timer_duration = timer_duration  # Set the timer duration
+        # Sets and resets the timer.
+        self.start_time = time.time() 
+        self.timer_duration = timer_duration  
 
         running = True
         while running:
-        #Updates the timer and focuses on where the player is clicking.
-        #Replaces the three cards on the table after a set is found.
+            # Handles the game loop. 
             elapsed_time = time.time() - self.start_time
             self.timer_duration = max(timer_duration - int(elapsed_time), 0)
 
+            # Handles the events on the table. 
             for event in pygame.event.get():
                 if event.type == QUIT:
                     running = False
+                # Handles the player clicking a card. 
                 elif event.type == MOUSEBUTTONDOWN:
                     x, y = event.pos
                     selected_card = self.get_card_at_position(x, y)
@@ -243,6 +251,7 @@ class TableVisualization:
                     if y >= window_height:
                         break
 
+            # Displays the timer and the scores. 
             self.display_info(window, window_height)
 
             pygame.display.flip()
@@ -418,7 +427,3 @@ table.fill_table()
 
 table_visualization = TableVisualization(table)
 table_visualization.display_start_screen()
-
-print("Selected Cards:")
-for card in table_visualization.selected_cards:
-    print(f"  {table.card_info(card)}")
